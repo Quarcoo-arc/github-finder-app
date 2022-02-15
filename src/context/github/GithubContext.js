@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
+import githubReducer from "./GithubReducers";
 
 const GithubContext = createContext();
 
@@ -6,11 +7,15 @@ const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
 const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_API_KEY;
 
 export const GithubContextProvider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const initialState = {
+    data: [],
+    isLoading: true,
+  };
+
+  const [state, dispatch] = useReducer(githubReducer, initialState);
 
   useEffect(() => {
-    fetchData().then(() => setIsLoading(false));
+    fetchData();
   }, []);
 
   const fetchData = async () => {
@@ -20,11 +25,13 @@ export const GithubContextProvider = ({ children }) => {
       },
     });
     const data = await response.json();
-    setData(data);
+    dispatch({ action: "GET_USERS", payload: data });
   };
 
   return (
-    <GithubContext.Provider value={{ data, isLoading }}>
+    <GithubContext.Provider
+      value={{ data: state.data, isLoading: state.isLoading }}
+    >
       {children}
     </GithubContext.Provider>
   );
