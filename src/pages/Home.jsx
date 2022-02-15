@@ -1,9 +1,9 @@
 import UserResults from "../components/users/UserResults";
-import UsersContext from "../context/UsersContext";
+import GithubContext from "../context/github/GithubContext";
 import { useContext } from "react";
 
 const Home = () => {
-  const { isLoading } = useContext(UsersContext);
+  const { isLoading } = useContext(GithubContext);
   return (
     <div className="mx-6">
       {isLoading ? (

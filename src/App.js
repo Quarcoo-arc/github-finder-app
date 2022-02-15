@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { UsersContextProvider } from "./context/UsersContext";
+import { GithubContextProvider } from "./context/github/GithubContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -8,7 +8,7 @@ import Footer from "./components/layout/Footer";
 
 function App() {
   return (
-    <UsersContextProvider>
+    <GithubContextProvider>
       <Router>
         <div className="flex flex-col justify-between h-screen">
           <NavBar />
@@ -22,7 +22,7 @@ function App() {
           <Footer />
         </div>
       </Router>
-    </UsersContextProvider>
+    </GithubContextProvider>
   );
 }
 
