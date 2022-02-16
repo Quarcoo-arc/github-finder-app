@@ -8,6 +8,7 @@ const GITHUB_URL = process.env.REACT_APP_GITHUB_URL;
 export const GithubContextProvider = ({ children }) => {
   const initialState = {
     data: [],
+    user: {},
     isLoading: false,
   };
 
@@ -20,8 +21,16 @@ export const GithubContextProvider = ({ children }) => {
 
     const response = await fetch(`${GITHUB_URL}/search/users?q=${param}`);
     const data = await response.json();
-    console.log(data);
+
     dispatch({ type: "GET_USERS", payload: data });
+  };
+
+  const getUserInfo = async (userName) => {
+    setIsLoading();
+
+    const response = await fetch(`${GITHUB_URL}/users/${userName}`);
+    const data = await response.json();
+    dispatch({ type: "GET_USER", payload: data });
   };
 
   const clearData = () => dispatch({ type: "CLEAR_ALL" });
@@ -29,9 +38,11 @@ export const GithubContextProvider = ({ children }) => {
   return (
     <GithubContext.Provider
       value={{
+        user: state.user,
         data: state.data,
         isLoading: state.isLoading,
         searchForUsers,
+        getUserInfo,
         clearData,
       }}
     >
