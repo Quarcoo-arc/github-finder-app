@@ -44,7 +44,7 @@ const UserSearch = () => {
           </div>
         </form>
       </div>
-      <div>
+      <div className="mt-5">
         {data.items && (
           <button onClick={clearData} className="btn btn-ghost btn-lg">
             Clear
