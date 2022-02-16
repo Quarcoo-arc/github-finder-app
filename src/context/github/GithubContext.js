@@ -9,6 +9,7 @@ export const GithubContextProvider = ({ children }) => {
   const initialState = {
     data: [],
     user: {},
+    repos: [],
     isLoading: false,
   };
 
@@ -30,9 +31,17 @@ export const GithubContextProvider = ({ children }) => {
 
     const response = await fetch(`${GITHUB_URL}/users/${userName}`);
     const data = await response.json();
+    getRepos(userName);
     dispatch({ type: "GET_USER", payload: data });
   };
 
+  const getRepos = async (userName) => {
+    setIsLoading();
+
+    const response = await fetch(`${GITHUB_URL}/users/${userName}/repos`);
+    const data = await response.json();
+    dispatch({ type: "GET_REPOS", payload: data });
+  };
   const clearData = () => dispatch({ type: "CLEAR_ALL" });
 
   return (
@@ -41,6 +50,7 @@ export const GithubContextProvider = ({ children }) => {
         user: state.user,
         data: state.data,
         isLoading: state.isLoading,
+        repos: state.repos,
         searchForUsers,
         getUserInfo,
         clearData,
